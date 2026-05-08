@@ -5,19 +5,27 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout fork
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Sync upstream
         run: |
+          git config user.name "heiyu"
+          git config user.email "1425350757@qq.com"
+
           git remote add upstream https://github.com/7Sageer/sublink-worker.git
           git fetch upstream
+
           git checkout main
           git merge upstream/main --no-edit
           git push origin main
